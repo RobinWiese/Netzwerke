@@ -1,0 +1,86 @@
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.util.Scanner;
+
+public class POP3 {
+    Socket socket;
+    Scanner reader;
+    PrintWriter writer;
+    Scanner tastatur;
+
+    public POP3() {
+        try {
+            System.out.println("test anfang try");
+            socket = new Socket("10.2.129.148", 10110);
+            reader = new Scanner(socket.getInputStream());
+            writer = new PrintWriter(socket.getOutputStream(), true);
+            tastatur = new Scanner(System.in);
+            System.out.println("test ende try");
+        } catch (IOException e) {
+            System.out.println("test catch");
+            System.out.println("Fehler beim Verbinden mit dem POP3-Server. " +
+                    "Beende Programm.");
+            System.exit(1);
+        }
+
+        System.out.println("test nach try-catch");
+        anmelden();
+    }
+
+    /**
+     * Melde Dich mit Namen "anna" und Passwort "geheim" an
+     * Server sendet "+..." bei Erfolg und "-..." bei Fehler
+     * "dsd".startsWith("+") => hat geklappt
+     *
+     * Sende USER anna
+     * Sende PASS geheim
+     */
+    public void anmelden() {
+        boolean weiter = false;
+
+        System.out.println("test anmeldung");
+
+        while(weiter == false){
+            System.out.println("Bitte gib deinen Namen an: ");
+            String networkInput = reader.nextLine();
+            if(networkInput.charAt(1) == '+'){
+                System.out.println("Deine Nutzername ist korrekt!");
+                weiter = true;
+            }else{
+                System.out.println("Dein Nutzername ist nicht vorhanden.");
+                weiter = false;
+            }
+        }
+
+        while(weiter == false){
+            System.out.println("Bitte gib dein Passwort ein: ");
+            String networkInput = reader.nextLine();
+            if(networkInput.charAt(1) == '+'){
+                System.out.println("Dein Passwort ist korrekt!");
+                weiter = true;
+            }else{
+                System.out.println("Dein Passwort ist falsch.");
+                weiter = false;
+            }
+        }
+    }
+
+    public void listeMails() {
+
+    }
+
+    /**
+     * Hole Inhalt von Mail mit Nummer <index>
+     * @param index
+     */
+    public void leseMail(int index) {
+        writer.println("RETR " + index);
+    }
+
+    //     socket.close();
+
+    public static void main(String[] args) {
+        new POP3();
+    }
+}
