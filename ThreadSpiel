@@ -62,7 +62,7 @@ class Aufgabensteller extends Thread {
         }
     }
     
-  public class kontrolliereEIngabe(char eingabe, char gesucht){
+  public class kontrolliereEingabe(char eingabe, char gesucht){
 	      if(eingabe == gesucht){
 		          System.out.println("Super! Das ist der richtige Buchstabe!");
 	      }else{
